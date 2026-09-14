@@ -1,116 +1,56 @@
 # cloudnative-go-lab
 
-Projeto pessoal pequeno para aprender Go, Docker e Kubernetes de forma pratica, sem microservicos artificiais nem dependencias desnecessarias.
+Small hands-on project to learn Go, Docker, Kubernetes, and cloud-native fundamentals.
 
-## Arquitetura
+## Features
 
-- `cmd/api`: ponto de entrada da API.
-- `internal/http`: handlers HTTP e router da aplicacao.
-- `k8s`: manifests Kubernetes para Deployment, Service e ConfigMap.
-- `.github/workflows`: pipeline simples de CI.
+- Minimal HTTP API using the Go standard library
+- `GET /`
+- `GET /health`
+- Configurable `PORT`
+- Graceful shutdown
+- Basic tests
+- Multi-stage Docker build
+- Kubernetes Deployment, Service, and ConfigMap
+- Liveness and readiness probes
+- GitHub Actions CI
 
-A aplicacao usa apenas a standard library do Go. Expoe:
-
-- `GET /`: mensagem simples sobre a aplicacao.
-- `GET /health`: resposta JSON com `{"status":"ok"}`.
-
-A porta e configurada pela variavel de ambiente `PORT` e usa `8080` por omissao.
-
-## Correr localmente
+## Run locally
 
 ```bash
 go run ./cmd/api
-```
-
-Com porta personalizada:
-
-```bash
-PORT=9090 go run ./cmd/api
-```
-
-Em PowerShell:
-
-```powershell
-$env:PORT = "9090"
-go run ./cmd/api
-```
-
-Testar os endpoints:
-
-```bash
-curl http://localhost:8080/
 curl http://localhost:8080/health
 ```
 
-Executar checks locais:
+## Docker
 
 ```bash
-gofmt -w .
-go vet ./...
-go test ./...
-go build ./...
-```
-
-## Correr com Docker
-
-Construir a imagem:
-
-```bash
-docker build -t cloudnative-go-lab:latest .
-```
-
-Correr o container:
-
-```bash
-docker run --rm -p 8080:8080 -e PORT=8080 cloudnative-go-lab:latest
-```
-
-Testar:
-
-```bash
-curl http://localhost:8080/health
+docker build -t cloudnative-go-lab .
+docker run --rm -p 8080:8080 cloudnative-go-lab
 ```
 
 ## Kubernetes
 
-Aplicar os manifests:
-
 ```bash
-kubectl apply -f k8s/configmap.yaml
-kubectl apply -f k8s/deployment.yaml
-kubectl apply -f k8s/service.yaml
-```
-
-Verificar recursos:
-
-```bash
+kubectl apply -f k8s/
 kubectl get pods
-kubectl get svc cloudnative-go-lab
-```
-
-Para testar localmente com port-forward:
-
-```bash
+kubectl get svc
 kubectl port-forward svc/cloudnative-go-lab 8080:80
-curl http://localhost:8080/health
 ```
-
-Nota: se estiveres a usar um cluster local como kind ou minikube, garante que a imagem `cloudnative-go-lab:latest` esta disponivel dentro do cluster.
 
 ## CI
 
-O GitHub Actions corre em `push` e `pull_request`:
+GitHub Actions runs on push and pull requests:
 
-- `gofmt` check;
-- `go vet ./...`;
-- `go test ./...`;
-- `go build ./...`.
+- `gofmt`
+- `go vet`
+- `go test`
+- `go build`
 
-## Proximos passos possiveis
+## Next steps
 
-- adicionar metrics;
-- observability;
-- ConfigMaps/Secrets;
-- rolling updates;
-- autoscaling;
-- experimentar Kubernetes Operators em Go posteriormente.
+- Metrics and observability
+- Secrets and configuration management
+- Rolling updates
+- Autoscaling
+- Kubernetes Operators in Go
