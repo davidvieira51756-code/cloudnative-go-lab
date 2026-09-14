@@ -1,0 +1,9 @@
+.git
+.github
+k8s
+README.md
+Dockerfile
+*.md
+tmp
+dist
+coverage.out

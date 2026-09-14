@@ -1,0 +1,13 @@
+# Go
+bin/
+coverage.out
+*.test
+
+# Local environment
+.env
+
+# Editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
