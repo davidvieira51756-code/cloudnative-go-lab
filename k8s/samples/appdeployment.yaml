@@ -1,0 +1,10 @@
+apiVersion: platform.cloudnative.dev/v1alpha1
+kind: AppDeployment
+
+metadata:
+  name: operator-demo
+
+spec:
+  image: cloudnative-go-lab:local
+  replicas: 3
+  port: 8080
