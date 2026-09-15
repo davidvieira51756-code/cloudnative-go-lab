@@ -29,13 +29,58 @@ docker build -t cloudnative-go-lab .
 docker run --rm -p 8080:8080 cloudnative-go-lab
 ```
 
-## Kubernetes
+## Running locally with Kubernetes (kind)
+
+Create a local Kubernetes cluster with `kind`:
+
+```bash
+kind create cluster --name cloudnative-go-lab
+```
+
+Build the Docker image locally:
+
+```bash
+docker build -t cloudnative-go-lab:local .
+```
+
+Load the local image into the `kind` cluster:
+
+```bash
+kind load docker-image cloudnative-go-lab:local --name cloudnative-go-lab
+```
+
+Apply the Kubernetes manifests:
 
 ```bash
 kubectl apply -f k8s/
+```
+
+Verify the Deployment, Pods, and Service:
+
+```bash
+kubectl get deployments
 kubectl get pods
-kubectl get svc
+kubectl get services
+kubectl describe deployment cloudnative-go-lab
+```
+
+Forward the Service to your local machine:
+
+```bash
 kubectl port-forward svc/cloudnative-go-lab 8080:80
+```
+
+In another terminal, test the API:
+
+```bash
+curl http://localhost:8080/health
+curl http://localhost:8080/
+```
+
+Destroy the cluster when you are done:
+
+```bash
+kind delete cluster --name cloudnative-go-lab
 ```
 
 ## CI

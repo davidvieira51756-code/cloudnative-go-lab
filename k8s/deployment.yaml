@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: cloudnative-go-lab:latest
+          image: cloudnative-go-lab:local
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
